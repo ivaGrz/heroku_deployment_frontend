@@ -12,6 +12,7 @@ function App() {
 	const [text, setText] = useState(
 		'Drop .zip file off your app, or click to upload!'
 	);
+	const [appUrl, setAppUrl] = useState('');
 
 	const handleInputChange = e => {
 		const value = e.target.value;
@@ -29,7 +30,7 @@ function App() {
 
 	const chooseFileHandler = file => {
 		setFile(file);
-		console.log(file);
+		// console.log(file);
 		changeText(file[0].name);
 	};
 
@@ -45,11 +46,15 @@ function App() {
 
 		try {
 			const res = await axios.post(
-				`http://localhost:3000/deployApp/${appName}`,
+				`http://localhost:3000/deployApp?app=${appName}&token=${herokuToken}`,
 				data
 			);
 			console.log(res);
-			changeText('Drop .zip file off your app, or click to upload!');
+			setAppUrl(res.data);
+			changeText(
+				'Drop .zip file off your app, or click to upload!',
+				res.data
+			);
 		} catch (err) {
 			console.log(err);
 			changeText('error uploading file');
@@ -73,8 +78,17 @@ function App() {
 				changeText={changeText}
 				text={text}
 			/>
-			{file && appName ? (
+			{file && appName && herokuToken ? (
 				<DeployButton deployApp={deployAppHandler} />
+			) : null}
+			{appUrl ? (
+				<div>
+					<p>You can find your app on</p>
+					<p className="url">{appUrl}</p>
+					{/* <p>
+						It may take a few minutes untill Heroku builds your app.
+					</p> */}
+				</div>
 			) : null}
 		</div>
 	);

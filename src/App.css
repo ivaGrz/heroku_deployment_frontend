@@ -14,3 +14,15 @@ h1 {
 	/* color: #6762a6; */
 	font-size: 40px;
 }
+
+.url {
+	font-size: 18px;
+	font-weight: bold;
+	color: #6762a6;
+}
+
+div {
+	font-size: 14px;
+	text-align: center;
+	color: #222;
+}
