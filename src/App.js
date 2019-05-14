@@ -1,26 +1,83 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Dropzone from './Dropzone/Dropzone';
+import Input from './Input/Input';
+import DeployButton from './DeployButton/DeployButton';
+import axios from 'axios';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [appName, setAppName] = useState('');
+	const [herokuToken, setHerokuToken] = useState('');
+	const [file, setFile] = useState(null);
+	const [text, setText] = useState(
+		'Drop .zip file off your app, or click to upload!'
+	);
+
+	const handleInputChange = e => {
+		const value = e.target.value;
+		const placeholder = e.target.placeholder;
+		if (placeholder === 'heroku app name') {
+			setAppName(value);
+		} else if (placeholder === 'heroku token') {
+			setHerokuToken(value);
+		}
+	};
+
+	const changeText = text => {
+		setText(text);
+	};
+
+	const chooseFileHandler = file => {
+		setFile(file);
+		console.log(file);
+		changeText(file[0].name);
+	};
+
+	const deployAppHandler = async () => {
+		if (!appName) {
+			return console.log('Enter name of your app first!');
+		}
+		const data = new FormData();
+		data.append('file', file[0]);
+
+		setFile(null);
+		changeText('Uploading');
+
+		try {
+			const res = await axios.post(
+				`http://localhost:3000/deployApp/${appName}`,
+				data
+			);
+			console.log(res);
+			changeText('Drop .zip file off your app, or click to upload!');
+		} catch (err) {
+			console.log(err);
+			changeText('error uploading file');
+		}
+	};
+
+	return (
+		<div className="app">
+			<h1>Heroku deployment</h1>
+			<Input
+				placeholder="heroku app name"
+				handleChange={handleInputChange}
+			/>
+			<Input
+				placeholder="heroku token"
+				handleChange={handleInputChange}
+			/>
+			<Dropzone
+				chooseFile={chooseFileHandler}
+				file={file}
+				changeText={changeText}
+				text={text}
+			/>
+			{file && appName ? (
+				<DeployButton deployApp={deployAppHandler} />
+			) : null}
+		</div>
+	);
 }
 
 export default App;
