@@ -35,9 +35,6 @@ function App() {
 	};
 
 	const deployAppHandler = async () => {
-		if (!appName) {
-			return console.log('Enter name of your app first!');
-		}
 		const data = new FormData();
 		data.append('file', file[0]);
 
@@ -57,7 +54,13 @@ function App() {
 			);
 		} catch (err) {
 			console.log(err);
-			changeText('error uploading file');
+			const errData = err.response.data.body;
+			if (errData) {
+				console.log(errData);
+				changeText(errData.message);
+			} else {
+				changeText('An error occurred');
+			}
 		}
 	};
 
