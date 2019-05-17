@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dropzone.css';
 import ReactDropzone from 'react-dropzone';
-import { FaFileArchive } from 'react-icons/fa';
+// import { FaFileArchive } from 'react-icons/fa';
 import Spinner from '../Spinner/Spinner';
 
 function Dropzone(props) {
@@ -18,9 +18,9 @@ function Dropzone(props) {
 				{({ getRootProps, getInputProps, isDragActive }) => (
 					<div {...getRootProps()} className="dropzone">
 						<input {...getInputProps()} />
-						{props.file ? (
+						{/* {props.file ? (
 							<FaFileArchive style={{ fontSize: '25px' }} />
-						) : null}
+						) : null} */}
 						{isDragActive ? 'Drop it!!' : content}
 					</div>
 				)}

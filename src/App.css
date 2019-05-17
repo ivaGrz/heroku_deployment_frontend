@@ -12,7 +12,14 @@ h1 {
 	color: #222;
 	text-align: center;
 	/* color: #6762a6; */
-	font-size: 40px;
+	font-size: 30px;
+}
+
+.switch_btn {
+	border: none;
+	color: red;
+	font-size: 14px;
+	margin: 10px;
 }
 
 .url {
@@ -25,4 +32,11 @@ div {
 	font-size: 14px;
 	text-align: center;
 	color: #222;
+}
+
+.desc {
+	display: inline-block;
+	color: #aaa;
+	font-weight: bold;
+	padding: 5px;
 }
