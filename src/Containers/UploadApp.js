@@ -30,9 +30,9 @@ function UploadApp(props) {
 
 		try {
 			const res = await axios.post(
-				`https://heroku-deployment-api.herokuapp.com/deployApp?app=${
-					props.appName
-				}&token=${props.herokuToken}`,
+				`http://localhost:3000/deployApp?app=${props.appName}&token=${
+					props.herokuToken
+				}`,
 				data
 			);
 			console.log(res);

@@ -22,18 +22,19 @@ function CreateDB(props) {
 	};
 
 	const createDB = async () => {
+		if (!props.appName || !props.herokuToken) {
+			console.log('App name and token are required!');
+			return;
+		}
 		setCreatingDB(true);
 		try {
 			if (file) {
 				const data = new FormData();
 				data.append('file', file[0]);
-				await axios.post(
-					`https://heroku-deployment-api.herokuapp.com/upload/sql`,
-					data
-				);
+				await axios.post(`http://localhost:3000/upload/sql`, data);
 			}
 			const res = await axios.post(
-				`https://heroku-deployment-api.herokuapp.com/createClearDB?app=${
+				`http://localhost:3000/createClearDB?app=${
 					props.appName
 				}&token=${props.herokuToken}`
 			);
@@ -43,7 +44,7 @@ function CreateDB(props) {
 			if (file) {
 				const fileName = file[0].name;
 				await axios.post(
-					`https://heroku-deployment-api.herokuapp.com/dumpSQLFile?host=${
+					`http://localhost:3000/dumpSQLFile?host=${
 						res.data.host
 					}&user=${res.data.username}&password=${
 						res.data.password
