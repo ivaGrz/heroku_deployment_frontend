@@ -37,19 +37,17 @@ function UploadApp(props) {
 			);
 			console.log(res);
 			setAppUrl(res.data);
-			changeText(
-				'Drop .zip file off your app, or click to upload!',
-				res.data
-			);
+			changeText('Drop .zip file off your app, or click to upload!');
 		} catch (err) {
 			console.log(err);
 			const errData = err.response.data.body;
 			if (errData) {
 				console.log(errData);
-				changeText(errData.message);
+				props.errMsg(errData.message);
 			} else {
-				changeText('An error occurred');
+				props.errMsg('An error occurred');
 			}
+			changeText('Drop .zip file off your app, or click to upload!');
 		}
 	};
 

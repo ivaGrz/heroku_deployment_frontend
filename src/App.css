@@ -17,7 +17,8 @@ h1 {
 
 .switch_btn {
 	border: none;
-	color: red;
+	color: #222;
+	border-bottom: 1px solid #222;
 	font-size: 14px;
 	margin: 10px;
 }

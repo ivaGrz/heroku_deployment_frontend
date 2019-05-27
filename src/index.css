@@ -9,3 +9,9 @@ body {
 	/* background-color: white; */
 	background-color: #6762a6;
 }
+
+div,
+input,
+button {
+	outline: 0;
+}

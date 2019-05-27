@@ -4,12 +4,14 @@ import './App.css';
 import UploadApp from './Containers/UploadApp';
 import CreateDB from './Containers/CreateDB';
 import Input from './Components/Input/Input';
+import ErrorMsg from './Components/ErrorMsg/ErrorMgs';
 
 function App() {
 	const [dbPage, setDbPage] = useState(false);
 	const [appName, setAppName] = useState('');
 	const [herokuToken, setHerokuToken] = useState('');
 	const [configDB, setconfigDB] = useState(null);
+	const [errMsg, setErrMsg] = useState('');
 
 	const saveConfigDataHandler = data => {
 		setconfigDB(data);
@@ -23,6 +25,10 @@ function App() {
 		} else if (placeholder === 'heroku token') {
 			setHerokuToken(value);
 		}
+	};
+
+	const errorMsgHandler = msg => {
+		setErrMsg(msg);
 	};
 
 	return (
@@ -39,15 +45,21 @@ function App() {
 				handleChange={handleInputChange}
 			/>
 			{!dbPage ? (
-				<UploadApp appName={appName} herokuToken={herokuToken} />
+				<UploadApp
+					appName={appName}
+					herokuToken={herokuToken}
+					errMsg={errorMsgHandler}
+				/>
 			) : (
 				<CreateDB
 					appName={appName}
 					herokuToken={herokuToken}
 					DBConfigData={configDB}
 					saveConfigData={saveConfigDataHandler}
+					errMsg={errorMsgHandler}
 				/>
 			)}
+			{errMsg ? <ErrorMsg msg={errMsg} /> : null}
 
 			<button
 				className="switch_btn"

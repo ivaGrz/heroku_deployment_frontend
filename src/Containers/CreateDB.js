@@ -23,8 +23,7 @@ function CreateDB(props) {
 
 	const createDB = async () => {
 		if (!props.appName || !props.herokuToken) {
-			console.log('App name and token are required!');
-			return;
+			return props.errMsg('App name and token are required!');
 		}
 		setCreatingDB(true);
 		try {
@@ -51,13 +50,20 @@ function CreateDB(props) {
 					}&db=${res.data.database}&file=${fileName}`
 				);
 			}
-
-			changeText('Drop .sql file, or click to upload!');
 			setIsChecked(false);
+			setCreatingDB(false);
+			changeText('Drop .sql file, or click to upload!');
 			setCreatingDB(false);
 		} catch (err) {
 			console.log(err);
-			changeText('An error occurred!');
+			const errData = err.response.data.body;
+			if (errData) {
+				console.log(errData);
+				props.errMsg(errData.message);
+			} else {
+				props.errMsg('An error occurred');
+			}
+			changeText('Drop .sql file, or click to upload!');
 			setCreatingDB(false);
 		}
 	};
